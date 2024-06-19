@@ -1,0 +1,30 @@
+﻿@model ProductDetaleViewModel
+
+@{
+    ViewBag.Title = "Product Details";
+    var photoPath = Url.Content("~/images/" + (Model.Product.PhotoPath ?? "noimage.jpg"));
+}
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="h4 mb-0">@Model.Product.Name</h2>
+            </div>
+            <div class="card-body text-center">
+                <img src="@photoPath" class="card-img-top rounded mb-3" alt="@Model.Product.Name" style="max-height: 300px; width: auto; object-fit: cover;">
+
+                <div class="my-4">
+                    <h5 class="card-text">Product ID: <span class="font-weight-normal">@Model.Product.Id</span></h5>
+                    <h5 class="card-text">Price: <span class="font-weight-normal">$@Model.Product.Price.ToString("F2")</span></h5>
+                    <h5 class="card-text">Phone Namber: <span class="font-weight-normal">@Model.Product.Namber</span></h5>
+                    <h5 class="card-text">Product Type: <span class="font-weight-normal">@Model.Product.productType</span></h5>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="home" asp-action="index" class="btn btn-secondary m-1">Back</a>
+
+            </div>
+        </div>
+    </div>
+</div>
