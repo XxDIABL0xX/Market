@@ -2,16 +2,18 @@
 
 namespace Market.Models
 {
-
+    // Implementation of the IProductRepository interface
     public class ProductRepository : IProductRepository
     {
-
         private readonly AppDbContext _context;
 
+        // Constructor injection for AppDbContext
         public ProductRepository(AppDbContext context)
         {
             _context = context;
         }
+
+        // Add a new product to the database
         public Product Add(Product product)
         {
             _context.Products.Add(product);
@@ -19,6 +21,7 @@ namespace Market.Models
             return product;
         }
 
+        // Delete a product from the database by its ID
         public void Delete(int id)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == id);
@@ -26,6 +29,7 @@ namespace Market.Models
             _context.SaveChanges();
         }
 
+        // Get all products with optional filtering by name, price, and product type
         public IEnumerable<Product> GetAllProduct(string Name, decimal? Price, string ProductType)
         {
             IQueryable<Product> query = _context.Products.AsQueryable();
@@ -55,12 +59,13 @@ namespace Market.Models
             return query.ToList();
         }
 
-
+        // Get a product by its ID
         public Product? GetProduct(int id)
         {
-           return _context.Products.Find(id);
+            return _context.Products.Find(id);
         }
 
+        // Update an existing product in the database
         public Product Update(Product productChanges)
         {
             var product = _context.Products.Attach(productChanges);
@@ -69,6 +74,7 @@ namespace Market.Models
             return productChanges;
         }
 
+        // Get all products posted by a specific user
         public IEnumerable<Product> GetProductsByUser(string UserInfo)
         {
             return _context.Products.Where(p => p.UserInfo == UserInfo).ToList();

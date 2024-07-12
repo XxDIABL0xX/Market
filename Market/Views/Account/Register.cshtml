@@ -43,23 +43,23 @@
     <h1>@ViewData["Title"]</h1>
 
     <form asp-action="Register" method="post" class="needs-validation" novalidate>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Display validation summary -->
         <div class="form-group">
-            <label asp-for="Email" class="form-label">Email</label>
-            <input asp-for="Email" class="form-control" placeholder="Enter your email" required />
-            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.Email)</div>
+            <label asp-for="Email" class="form-label">Email</label> <!-- Label for email field -->
+            <input asp-for="Email" class="form-control" placeholder="Enter your email" required /> <!-- Email input field -->
+            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.Email)</div> <!-- Validation message for email -->
         </div>
         <div class="form-group">
-            <label asp-for="Password" class="form-label">Password</label>
-            <input asp-for="Password" class="form-control" placeholder="Enter your password" required />
-            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.Password)</div>
+            <label asp-for="Password" class="form-label">Password</label> <!-- Label for password field -->
+            <input asp-for="Password" class="form-control" placeholder="Enter your password" required /> <!-- Password input field -->
+            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.Password)</div> <!-- Validation message for password -->
         </div>
         <div class="form-group">
-            <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
-            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" required />
-            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.ConfirmPassword)</div>
+            <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label> <!-- Label for confirm password field -->
+            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" required /> <!-- Confirm password input field -->
+            <div class="invalid-feedback">@Html.ValidationMessageFor(model => model.ConfirmPassword)</div> <!-- Validation message for confirm password -->
         </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Register</button> <!-- Submit button -->
     </form>
 </div>

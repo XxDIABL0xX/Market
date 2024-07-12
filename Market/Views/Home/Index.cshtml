@@ -1,59 +1,58 @@
 ﻿@model IEnumerable<Product>
 
-    <style>
+<style>
     .form-group {
         margin-bottom: 20px;
     }
-
-    </style>
-
-
-
+</style>
 
 <div class="container">
+    <!-- Form for filtering products -->
     <form asp-controller="Home" asp-action="Index" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="Name" class="sr-only"> Name</label>
+            <label for="Name" class="sr-only">Name</label>
             <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter Name">
         </div>
         <div class="form-group mr-2">
             <label for="Price" class="sr-only">Price</label>
-            <input type="number" class="form-control" id="age" name="Price" placeholder="Enter Price">
+            <input type="number" class="form-control" id="Price" name="Price" placeholder="Enter Price">
         </div>
-
         <div class="form-group mr-2">
             <label for="ProductType" class="sr-only">ProductType</label>
             <select class="form-control" id="ProductType" name="ProductType">
                 <option value="">Select ProductType</option>
-                @foreach (var club in Enum.GetValues(typeof(ProductType)))
+                @foreach (var productType in Enum.GetValues(typeof(ProductType)))
                 {
-                    <option value="@club">@club</option>
+                    <option value="@productType">@productType</option>
                 }
             </select>
         </div>
-
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 
-@{
-    ViewBag.Title = "Product List";
-}
+    @{
+        ViewBag.Title = "Product List";
+    }
 
-<div class="container mt-4">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var product in Model)
-        {
-            <div class="col mb-4">
-                <div class="card h-100">
-                    <img src="~/images/@product.PhotoPath" class="card-img-top" alt="@product.Name" style="width: 100%; height: auto; max-width: 250px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Name</h5>
-                    </div>
-                    <div class="card-footer text-center">
-                        <a asp-controller="home" asp-action="details" asp-route-id="@product.Id" class="btn btn-primary m-1">View</a>
+    <div class="container mt-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col mb-4">
+                    <div class="card h-100">
+                        <!-- Display product image -->
+                        <img src="~/images/@product.PhotoPath" class="card-img-top" alt="@product.Name" style="width: 100%; height: auto; max-width: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <!-- Display product name -->
+                            <h5 class="card-title">@product.Name</h5>
+                        </div>
+                        <div class="card-footer text-center">
+                            <!-- Link to view product details -->
+                            <a asp-controller="home" asp-action="details" asp-route-id="@product.Id" class="btn btn-primary m-1">View</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

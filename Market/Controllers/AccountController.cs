@@ -9,6 +9,7 @@ namespace Market.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        // Constructor injection for UserManager and SignInManager
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -36,10 +37,12 @@ namespace Market.Controllers
 
                 if (result.Succeeded)
                 {
+                    // Sign in the user and redirect to the Home page
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
 
+                // Add errors to the model state
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -64,10 +67,12 @@ namespace Market.Controllers
 
                 if (!result.Succeeded)
                 {
+                    // Handle login failure
                     ModelState.AddModelError("", "Wrong password");
                     return View(model);
                 }
 
+                // Redirect to the Home page on successful login
                 return RedirectToAction("Index", "Home");
             }
             return View(model);
@@ -77,6 +82,7 @@ namespace Market.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            // Redirect to the Home page after logout
             return RedirectToAction("Index", "Home");
         }
     }

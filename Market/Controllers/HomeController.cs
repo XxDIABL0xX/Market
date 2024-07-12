@@ -12,14 +12,16 @@ namespace Market.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-
+        // Constructor injection for IProductRepository and IWebHostEnvironment
         public HomeController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment)
         {
             _productRepository = productRepository;
             _webHostEnvironment = webHostEnvironment;
         }
+
         [Authorize]
         [HttpGet]
+        // Display all products based on search criteria
         public ViewResult Index(string ProductName, decimal? Price, string ProductType)
         {
             var model = _productRepository.GetAllProduct(ProductName, Price, ProductType);
@@ -28,6 +30,7 @@ namespace Market.Controllers
 
         [Authorize]
         [HttpGet]
+        // Display the product creation form
         public ViewResult Create()
         {
             return View();
@@ -35,12 +38,14 @@ namespace Market.Controllers
 
         [Authorize]
         [HttpPost]
+        // Handle the product creation form submission
         public IActionResult Create(ProductCreateViewModel model)
         {
             if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
                 string? uniqueFileName = null;
 
+                // Handle file upload
                 if (model.Photo != null)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
@@ -49,8 +54,9 @@ namespace Market.Controllers
                     model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
 
-                string userInfo = User.Identity.Name ?? "Unknown User"; 
+                string userInfo = User.Identity.Name ?? "Unknown User";
 
+                // Create new product instance
                 Product newproduct = new Product
                 {
                     Name = model.Name,
@@ -61,6 +67,7 @@ namespace Market.Controllers
                     PhotoPath = uniqueFileName
                 };
 
+                // Add product to the repository
                 _productRepository.Add(newproduct);
                 return RedirectToAction("index");
             }
@@ -68,10 +75,9 @@ namespace Market.Controllers
             return View();
         }
 
-
-
         [Authorize]
         [HttpGet]
+        // Display the product edit form
         public IActionResult Edit(int id)
         {
             Product product = _productRepository.GetProduct(id);
@@ -97,14 +103,16 @@ namespace Market.Controllers
 
         [Authorize]
         [HttpPost]
+        // Handle the product edit form submission
         public IActionResult Edit(ProductEditViewModel model)
         {
             if (ModelState.IsValid)
             {
                 Product product = _productRepository.GetProduct(model.Id);
-                
+
+                // Check if the user is authorized to edit the product
                 if (product == null || product.UserInfo != User.Identity.Name)
-                {                  
+                {
                     ModelState.AddModelError("", "You are not authorized to edit this product.");
                     return View(model);
                 }
@@ -115,6 +123,7 @@ namespace Market.Controllers
                 product.Namber = model.Namber;
                 product.productType = model.productType;
 
+                // Handle file upload
                 if (model.Photo != null)
                 {
                     if (!string.IsNullOrEmpty(model.ExistingPhotoPath))
@@ -126,6 +135,7 @@ namespace Market.Controllers
                     product.PhotoPath = ProcessUploadedFile(model);
                 }
 
+                // Update product in the repository
                 _productRepository.Update(product);
                 return RedirectToAction("Index");
             }
@@ -133,13 +143,12 @@ namespace Market.Controllers
             return View(model);
         }
 
-
-
-
+        // Handle file upload and return the unique file name
         private string ProcessUploadedFile(ProductCreateViewModel model)
         {
             string uniqueFileName = null;
 
+            // Handle file upload
             if (model.Photo != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
@@ -156,16 +165,16 @@ namespace Market.Controllers
 
         [Authorize]
         [HttpPost]
+        // Handle product deletion
         public IActionResult Delete(int id)
         {
             _productRepository.Delete(id);
             return RedirectToAction("index");
         }
 
-
-
         [Authorize]
         [HttpGet]
+        // Display product details
         public ViewResult Details(int id)
         {
             ProductDetaleViewModel homeDetailsViewModel = new ProductDetaleViewModel()
@@ -176,10 +185,5 @@ namespace Market.Controllers
 
             return View(homeDetailsViewModel);
         }
-
-
-
-
     }
-
 }
